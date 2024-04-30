@@ -59,7 +59,6 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +110,21 @@ class _LoginState extends State<Login> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Navigate the user to the Home page
+                        if (emailController.text == "arun@gogosoon.com" &&
+                            passwordController.text == "qazxswedcvfr") {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage(
+                                      email: emailController.text,
+                                    )),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Invalid Credentials')),
+                          );
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Please fill input')),
@@ -130,3 +143,29 @@ class _LoginState extends State<Login> {
   }
 }
 
+class HomePage extends StatelessWidget {
+  const HomePage({super.key, required this.email});
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Home Page'),
+        ),
+        body: Column(
+          children: [
+            Text(email),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Go back!"),
+              ),
+            ),
+          ],
+        ));
+  }
+}
